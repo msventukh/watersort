@@ -31,6 +31,7 @@ def start_game(colors: int, layers: int = 4):
             break
         turn = turn + 1
         print("")
+    show_current_state(game.containers)
     end_game(result, turn)
 
 
@@ -59,4 +60,4 @@ def check_input(prompt: str):
 
 
 if __name__ == '__main__':
-    start_game(1, 2)
+    start_game(10, 4)
