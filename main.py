@@ -11,7 +11,7 @@ OUTPUT = {
 }
 
 
-def start_game(colors: int, layers: int = 4):
+def start_game(colors: int, layers: int):
     game = Game(colors, layers)
     turn = 1
     print("Let's get it started!")
