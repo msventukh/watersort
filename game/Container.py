@@ -40,8 +40,11 @@ class Container:
     def is_empty(self):
         return len(self.blocks) == 0
 
+    def is_filled_with_same_blocks(self):
+        return not self.has_space() and self.contains_same()
+
     def contains_same(self):
-        return not self.has_space() and all(x == self.show_tail() for x in self.blocks)
+        return all(x == self.show_tail() for x in self.blocks)
 
     def to_string(self):
         return self.head + ''.join(map(lambda n: COLORS[n], self.blocks))

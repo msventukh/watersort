@@ -5,6 +5,7 @@ from game.exceptions import ForceQuit
 from game.Game import Status, Game
 from solvers.FirstPossibleMove import FirstPossibleMove
 from solvers.RandomMove import RandomMove
+from solvers.WeightByLevel import WeightByLevel
 from solvers.exceptions import SolverStuck
 
 OUTPUT = {
@@ -127,6 +128,6 @@ if __name__ == '__main__':
     parser.add_argument("-r", "--random", help="Initial random value)", type=float, default=None)
     args = parser.parse_args()
     if args.auto:
-        start_game_auto(args.colors, args.layers, RandomMove(), args.random)
+        start_game_auto(args.colors, args.layers, WeightByLevel(), args.random)
     else:
         start_game(args.colors, args.layers, args.random)

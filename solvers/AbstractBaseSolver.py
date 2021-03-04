@@ -40,7 +40,7 @@ class AbstractBaseSolver(ABC):
                 d = containers[j]
                 if s != d:
                     bd = d.show_tail()
-                    if not (s.is_empty() or s.contains_same()) and ((d.has_space() and bs == bd) or d.is_empty()):
+                    if not (s.is_empty() or s.is_filled_with_same_blocks()) and ((d.has_space() and bs == bd) or d.is_empty()):
                         containers_copy = copy.deepcopy(containers)
                         containers_copy[j].put(containers_copy[i].take())
                         if self.is_new_state(containers_copy):

@@ -30,7 +30,7 @@ class Game:
         return len(set(tails_with_space) & set(tails_without_space)) == 0
 
     def is_victory(self):
-        return all((c.contains_same() or c.is_empty()) for c in self.containers)
+        return all((c.is_filled_with_same_blocks() or c.is_empty()) for c in self.containers)
 
     def next_turn(self, source: int, dest: int):
         if self.is_possible_move(source, dest):
