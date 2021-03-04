@@ -1,0 +1,2 @@
+class SolverStuck(Exception):
+    pass

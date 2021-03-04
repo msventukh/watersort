@@ -13,12 +13,12 @@ container has the same color as the block you move. You can move only the right 
 3. If the move is possible, the state will change and you can proceed to the next move.
 
 ## How to run
-The game requires Python 3.x (written and test on 3.9.1)
+The game requires Python 3.x (written and tested on 3.9.1)
 
-* `python main.py` runs the game with default settings
-* `python main.py -h` shows help and possible options
-* `python main.py -c <number>` runs the game with selected number of colors
-* `python main.py -l <number>` runs the game with selected number of layers
-Options `-c` and `-l` can be used together.
+* `python run.py` runs the game with default settings
+* `python run.py -h` shows help and possible options
+* `python run.py -c <number>` runs the game with selected number of colors
+* `python run.py -l <number>` runs the game with selected number of layers
+* `python run.py -a` "auto" mode — an algorithm will play the game
   
 Enjoy!

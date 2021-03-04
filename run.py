@@ -1,8 +1,11 @@
 import argparse
 
 from game.Container import Container
-from game.ForceQuit import ForceQuit
+from game.exceptions import ForceQuit
 from game.Game import Status, Game
+from solvers.FirstPossibleMove import FirstPossibleMove
+from solvers.RandomMove import RandomMove
+from solvers.exceptions import SolverStuck
 
 OUTPUT = {
     Status.victory: 'Congratulations! You won!',
@@ -37,6 +40,38 @@ def start_game(colors: int, layers: int):
     end_game(result, turn)
 
 
+def start_game_auto(colors: int, layers: int, solver):
+    game = Game(colors, layers)
+    turn = 1
+    print(f"Solver '{solver.to_string()}' will try to solve the puzzle now!")
+    while True:
+        print(f"Turn {turn}")
+        show_current_state(game.containers)
+        while True:
+            try:
+                check_input_for_exit("Press ENTER to continue or type 'exit' to exit")
+                (source, dest) = solver.next_move(game.containers)
+                print(f"Where to take from?\t{source}")
+                print(f"Where to put to?\t{dest}")
+            except ForceQuit:
+                result = Status.exit
+                break
+            except SolverStuck:
+                print("Solver can't find moves that would lead to a new state")
+                result = Status.exit
+                break
+            result = game.next_turn(source, dest)
+            if result != Status.impossible:
+                break
+            print("Impossible move")
+        if result != Status.next:
+            break
+        turn = turn + 1
+        print("")
+    show_current_state(game.containers)
+    end_game(result, turn)
+
+
 def end_game(result: Status, turns: int):
     print("")
     print(OUTPUT[result])
@@ -52,13 +87,18 @@ def show_current_state(containers: list[Container]):
 
 def check_input(prompt: str):
     while True:
-        s = input(f"{prompt}\t")
-        if s == 'exit':
-            raise ForceQuit
+        s = check_input_for_exit(prompt)
         try:
             return int(s)
         except ValueError:
             print("Please enter a number")
+
+
+def check_input_for_exit(prompt: str):
+    s = input(f"{prompt}\t")
+    if s == 'exit':
+        raise ForceQuit
+    return s
 
 
 def check_colors(value):
@@ -82,5 +122,10 @@ if __name__ == '__main__':
     parser.add_argument("-c", "--colors", help="Number of different colors [2..10]", type=check_colors, default=6)
     parser.add_argument("-l", "--layers", help="Number of layers in a single container [2..100]", type=check_layers,
                         default=4)
+    parser.add_argument("-a", "--auto", help="Autoplay mode (an algorithm will try to solve the puzzle)", default=False,
+                        action='store_true')
     args = parser.parse_args()
-    start_game(args.colors, args.layers)
+    if args.auto:
+        start_game_auto(args.colors, args.layers, RandomMove())
+    else:
+        start_game(args.colors, args.layers)

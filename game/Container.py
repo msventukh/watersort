@@ -33,6 +33,8 @@ class Container:
         return len(self.blocks) < self.size
 
     def show_tail(self):
+        if self.is_empty():
+            return None
         return self.blocks[len(self.blocks) - 1]
 
     def is_empty(self):
