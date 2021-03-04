@@ -14,8 +14,8 @@ OUTPUT = {
 }
 
 
-def start_game(colors: int, layers: int):
-    game = Game(colors, layers)
+def start_game(colors: int, layers: int, rnd_init=None):
+    game = Game(colors, layers, rnd_init)
     turn = 1
     print("Let's get it started!")
     while True:
@@ -40,8 +40,8 @@ def start_game(colors: int, layers: int):
     end_game(result, turn)
 
 
-def start_game_auto(colors: int, layers: int, solver):
-    game = Game(colors, layers)
+def start_game_auto(colors: int, layers: int, solver, rnd_init=None):
+    game = Game(colors, layers, rnd_init)
     turn = 1
     print(f"Solver '{solver.to_string()}' will try to solve the puzzle now!")
     while True:
@@ -124,8 +124,9 @@ if __name__ == '__main__':
                         default=4)
     parser.add_argument("-a", "--auto", help="Autoplay mode (an algorithm will try to solve the puzzle)", default=False,
                         action='store_true')
+    parser.add_argument("-r", "--random", help="Initial random value)", type=float, default=None)
     args = parser.parse_args()
     if args.auto:
-        start_game_auto(args.colors, args.layers, RandomMove())
+        start_game_auto(args.colors, args.layers, RandomMove(), args.random)
     else:
-        start_game(args.colors, args.layers)
+        start_game(args.colors, args.layers, args.random)

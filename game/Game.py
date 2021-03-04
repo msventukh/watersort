@@ -6,10 +6,15 @@ Status = Enum('GameEnding', 'victory defeat exit next impossible')
 
 
 class Game:
-    def __init__(self, colors: int, layers: int = 4):
+    def __init__(self, colors: int, layers: int = 4, rnd_init_value=None):
         while True:
             blocks = list(str(x) for x in range(10))[:colors] * layers
-            random.shuffle(blocks)
+            if rnd_init_value is None:
+                rnd_init_value = random.random()
+                print(f"Initial random value is {rnd_init_value}")
+
+            def randomizer(): return rnd_init_value
+            random.shuffle(blocks, random=randomizer)
             self.containers = [Container(layers, blocks[x:x + layers]) for x in range(0, len(blocks), layers)] + \
                               [Container.create_empty(layers), Container.create_empty(layers)]
             if not self.is_defeat() and not self.is_victory():
